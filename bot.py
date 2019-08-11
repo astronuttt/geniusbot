@@ -84,15 +84,50 @@ def scrap_song_url(url):
 #     else:
 #         print(defaults['message']['search_fail'])
 
-@bot.inline_handler(lambda query: len(query.query.split()) == 1)
+@bot.inline_handler(lambda query: len(query.query.split()) == 2)
 def query_text(inline_query):
     text = inline_query.query
-    try:
-        r = types.InlineQueryResultArticle('1', '{}'.format(text), types.InputTextMessageContent('hi'))
-        r2 = types.InlineQueryResultArticle('2', 'Result2', types.InputTextMessageContent('hi'))
-        bot.answer_inline_query(inline_query.id, [r, r2])
-    except Exception as e:
-        print(e)
+    artist = inline_query.query.split()[0]
+    song = inline_query.query.split()[1]
+    current_song_info = {'artist': '{}'.format(artist), 'title': '{}'.format(song)}
+    song_title = current_song_info['title']
+    artist_name = current_song_info['artist']
+   #bot.send_message(message.chat.id, "{} by {}".format(song_title, artist_name))
+
+    # Search for matches in request response
+
+    response = request_song_info(song_title, artist_name)
+    json = response.json()
+    remote_song_info = None
+
+    for hit in json['response']['hits']:
+        if artist_name.lower() in hit['result']['primary_artist']['name'].lower():
+            remote_song_info = hit
+            break
+    if remote_song_info:
+        song_url = remote_song_info['result']['url']
+        lyrics = scrap_song_url(song_url)
+        #bot.send_message(message.chat.id, lyrics)
+        info = "{} by {}".format(song_title, artist_name)
+        try:
+            r = types.InlineQueryResultArticle('1', '{}'.format(info), types.InputTextMessageContent('{}'.format(lyrics)))
+           # r2 = types.InlineQueryResultArticle('2', 'Result2', types.InputTextMessageContent('hi'))
+            bot.answer_inline_query(inline_query.id, [r])
+        except Exception as e:
+            print(e)
+    else:
+        try:
+            r = types.InlineQueryResultArticle('1', 'could not find that song', types.InputTextMessageContent('!!!!!!!'))
+            bot.answer_inline_query(inline_query.id, [r])
+        except Exception as e:
+            print(e)
+            #bot.send_message(message.chat.id, "i couldnt find this song!")
+    # try:
+    #     r = types.InlineQueryResultArticle('1', '{}'.format(text), types.InputTextMessageContent('hi'))
+    #     r2 = types.InlineQueryResultArticle('2', 'Result2', types.InputTextMessageContent('hi'))
+    #     bot.answer_inline_query(inline_query.id, [r, r2])
+    # except Exception as e:
+    #     print(e)
 
 @bot.message_handler(commands=['lyric'])
 def send(message):
