@@ -101,6 +101,13 @@ def send(message):
 
 
 
+print("-------------------")
+print("-------------------")
+print("-------------------")
+print("bot run successfuly")
+print("-------------------")
+print("-------------------")
 
+bot.polling(none_stop=True, interval=0, timeout=3)
 # if __name__ == '__main__':
 #     main()
