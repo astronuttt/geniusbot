@@ -83,12 +83,22 @@ def scrap_song_url(url):
 #         print(lyrics)
 #     else:
 #         print(defaults['message']['search_fail'])
+@bot.inline_handler(lambda query: len(query.query.split()) == 0)
+def search_guid(inline_query):
+    in_g = "try to search like this: \n artist-song"
+    out_g = "try to search like this: artist-song \n example: halsey-nightmare"
+    try:
+        r = types.InlineQueryResultArticle('1', '{}'.format(in_g), types.InputTextMessageContent('{}'.format(out_g)))
+        bot.answer_inline_query(inline_query.id, [r])
+    except Exception as e:
+        print(e)
 
-@bot.inline_handler(lambda query: len(query.query.split()) == 2)
+
+
+@bot.inline_handler(lambda query: len(query.query.split("-")) == 2)
 def query_text(inline_query):
-    text = inline_query.query
-    artist = inline_query.query.split()[0]
-    song = inline_query.query.split()[1]
+    artist = inline_query.query.split("-")[0]
+    song = inline_query.query.split("-")[1]
     current_song_info = {'artist': '{}'.format(artist), 'title': '{}'.format(song)}
     song_title = current_song_info['title']
     artist_name = current_song_info['artist']
