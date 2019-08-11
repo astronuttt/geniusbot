@@ -82,7 +82,8 @@ def scrap_song_url(url):
 
 @bot.message_handler(commands=['lyric'])
 def send(message):
-    if message.text.split()[1] and message.text.split()[2]:
+    lyricss = message.text.split()
+    if len(lyricss) == 3:
         artist = message.text.split()[1]
         song = message.text.split()[2]
         current_song_info = {'artist': '{}'.format(artist), 'title': '{}'.format(song)}
