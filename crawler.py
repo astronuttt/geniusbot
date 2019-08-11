@@ -1,4 +1,4 @@
-import sys, dbus, requests
+import sys, requests
 from bs4 import BeautifulSoup
 from config import (
     TOKEN
