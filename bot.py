@@ -104,7 +104,7 @@ def send(message):
             lyrics = scrap_song_url(song_url)
             bot.send_message(message.chat.id, lyrics)
         else:
-            bot.send_message(message.chat.id, (defaults['message']['search_fail']))
+            bot.send_message(message.chat.id, "i couldnt find this song!")
     else:
         bot.send_message(message.chat.id, "wrong format")
 
