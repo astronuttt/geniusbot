@@ -1,2 +1,5 @@
-token = "632927363:AAFqnm9C2gdHNs_4YCEx93HjqMT-ZY4QrgQ"
+bot_token = "632927363:AAFqnm9C2gdHNs_4YCEx93HjqMT-ZY4QrgQ"
+TOKEN = 'zUKGnnzvuNhVS4s0LaafO09KaHgnxms1PO_pt1JH9H4Rs6tBRgMRksJNtDtgcBLw'
 sudo_user = "183982329"
+client_id = '9QxQRJDvEwyKjpVn3JoHez7p8BsnPO7rpehzmwlKBdFZjN71BrKfLVzQnyXyvCih'
+client_secret = 'tePSLljN6UBeanWG3zqqw60r0qkp6Us2uf2iaBDfHBRGFRmKIfipCGXbZi6EP4WMnP-f-FTAhPO_ExY01S6Aig'
