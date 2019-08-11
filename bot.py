@@ -1,5 +1,8 @@
 import telebot
 import config
+import logging
+import time
+from telebot import types
 from bs4 import BeautifulSoup
 import sys, requests
 from config import (
@@ -7,6 +10,7 @@ from config import (
 )
 
 bot = telebot.TeleBot(config.bot_token)
+telebot.logger.setLevel(logging.DEBUG)
 
 defaults = {
     'request': {
@@ -79,6 +83,15 @@ def scrap_song_url(url):
 #         print(lyrics)
 #     else:
 #         print(defaults['message']['search_fail'])
+
+@bot.inline_handler(lambda query: query.query == 'text')
+def query_text(inline_query):
+    try:
+        r = types.InlineQueryResultArticle('1', 'Result1', types.InputTextMessageContent('hi'))
+        r2 = types.InlineQueryResultArticle('2', 'Result2', types.InputTextMessageContent('hi'))
+        bot.answer_inline_query(inline_query.id, [r, r2])
+    except Exception as e:
+        print(e)
 
 @bot.message_handler(commands=['lyric'])
 def send(message):
