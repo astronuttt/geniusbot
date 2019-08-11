@@ -1,7 +1,7 @@
 import telebot
 import config
 from bs4 import BeautifulSoup
-import sys, dbus, requests
+import sys, requests
 from config import (
     TOKEN
 )
@@ -20,7 +20,6 @@ defaults = {
                        'or none to get the song currently playing on Spotify.'
     }
 }
-
 def request_song_info(song_title, artist_name):
     base_url = defaults['request']['base_url']
     headers = {'Authorization': 'Bearer ' + defaults['request']['token']}
@@ -38,9 +37,70 @@ def scrap_song_url(url):
 
     return lyrics
 
+def get_current_song_info():
+    return {'artist': 'halsey', 'title': 'Nightmare'}
+
+# def main():
+#     args_length = len(sys.argv)
+#     if args_length == 1:
+#         # Get info about song currently playing on Spotify
+#         current_song_info = get_current_song_info()
+#         song_title = current_song_info['title']
+#         artist_name = current_song_info['artist']
+#     elif args_length == 3:
+#         # Use input as song title and artist name
+#         song_info = sys.argv
+#         song_title, artist_name = song_info[1], song_info[2]
+#     else:
+#         print(defaults['message']['wrong_input'])
+#         return
+#
+#     print('{} by {}'.format(song_title, artist_name))
+#
+#     # Search for matches in request response
+#     response = request_song_info(song_title, artist_name)
+#     json = response.json()
+#     remote_song_info = None
+#
+#     for hit in json['response']['hits']:
+#         if artist_name.lower() in hit['result']['primary_artist']['name'].lower():
+#             remote_song_info = hit
+#             break
+#
+#     # Extract lyrics from URL if song was found
+#     if remote_song_info:
+#         song_url = remote_song_info['result']['url']
+#         lyrics = scrap_song_url(song_url)
+#
+#         #write_lyrics_to_file(lyrics, song_title, artist_name)
+#
+#         print(lyrics)
+#     else:
+#         print(defaults['message']['search_fail'])
+
+@bot.message_handler(commands=['test'])
+def send(message):
+    current_song_info = get_current_song_info()
+    song_title = current_song_info['title']
+    artist_name = current_song_info['artist']
+    bot.send_message(message.chat.id, "{} by {}".format(song_title, artist_name))
+    # Search for matches in request response
+    response = request_song_info(song_title, artist_name)
+    json = response.json()
+    remote_song_info = None
+
+    for hit in json['response']['hits']:
+        if artist_name.lower() in hit['result']['primary_artist']['name'].lower():
+            remote_song_info = hit
+            break
+    if remote_song_info:
+        song_url = remote_song_info['result']['url']
+        lyrics = scrap_song_url(song_url)
+    bot.send_message(message.chat.id, lyrics)
 
 
-title = "Nightmare"
-artist = "halsey"
 
-request_song_info(title, artist)
+
+
+# if __name__ == '__main__':
+#     main()
