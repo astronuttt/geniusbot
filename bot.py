@@ -37,8 +37,13 @@ def scrap_song_url(url):
 
     return lyrics
 
-def get_current_song_info():
-    return {'artist': 'halsey', 'title': 'Nightmare'}
+# def get_current_song_info():
+#     return {'artist': 'halsey', 'title': 'Nightmare'}
+# @bot.message_handler(commands=['lyric'])
+# def slyric(message):
+#     artist = message.text.split()[1]
+#     song = message.text.split()[2]
+#     return
 
 # def main():
 #     args_length = len(sys.argv)
@@ -78,9 +83,11 @@ def get_current_song_info():
 #     else:
 #         print(defaults['message']['search_fail'])
 
-@bot.message_handler(commands=['test'])
+@bot.message_handler(commands=['lyric'])
 def send(message):
-    current_song_info = get_current_song_info()
+    artist = message.text.split()[1]
+    song = message.text.split()[2]
+    current_song_info = {'artist': '{}'.format(artist), 'title': '{}'.format(song)}
     song_title = current_song_info['title']
     artist_name = current_song_info['artist']
     bot.send_message(message.chat.id, "{} by {}".format(song_title, artist_name))
