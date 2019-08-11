@@ -1,0 +1,2 @@
+token = "632927363:AAFqnm9C2gdHNs_4YCEx93HjqMT-ZY4QrgQ"
+sudo_user = "183982329"
