@@ -131,6 +131,21 @@ print("bot run successfuly")
 print("-------------------")
 print("-------------------")
 
-bot.polling(none_stop=True, interval=0, timeout=3)
+#bot.polling(none_stop=True, interval=0, timeout=3)
+
+def main_loop():
+    bot.polling(True)
+    while 1:
+        time.sleep(3)
+
+
+if __name__ == '__main__':
+    try:
+        main_loop()
+    except KeyboardInterrupt:
+        print('\nExiting by user request.\n')
+        sys.exit(0)
+
+
 # if __name__ == '__main__':
 #     main()
