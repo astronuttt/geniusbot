@@ -84,10 +84,11 @@ def scrap_song_url(url):
 #     else:
 #         print(defaults['message']['search_fail'])
 
-@bot.inline_handler(lambda query: len(query.query) is 0)
+@bot.inline_handler(lambda query: len(query.query.split()) == 1)
 def query_text(inline_query):
+    text = inline_query.query
     try:
-        r = types.InlineQueryResultArticle('1', 'Result1', types.InputTextMessageContent('hi'))
+        r = types.InlineQueryResultArticle('1', '{}'.format(text), types.InputTextMessageContent('hi'))
         r2 = types.InlineQueryResultArticle('2', 'Result2', types.InputTextMessageContent('hi'))
         bot.answer_inline_query(inline_query.id, [r, r2])
     except Exception as e:
